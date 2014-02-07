@@ -30,7 +30,7 @@ public class SurveyEntity extends BaseEntity {
 	@JoinColumn(name = "SURVEY_ID")
 	private List<QuestionEntity> questions = new ArrayList<QuestionEntity>();
 
-	@Pattern(regexp="[a-zA-Z0-9?!,.]*")
+	@Pattern(regexp="[a-zA-Z 0-9]*")
 	@Column(name = "NAME", length = 50, nullable = false)
 	private String name;
 

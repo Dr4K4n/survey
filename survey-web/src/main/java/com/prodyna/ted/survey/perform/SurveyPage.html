@@ -7,11 +7,12 @@
 </head>
 <body>
 	<wicket:extend>
+	<div class="survey-temp">
 		<div wicket:id="noSurveyFound"/>
 		<form wicket:id="form">
 			<div wicket:id="feedbackPanel"/>
-			<div wicket:id="nameLabel"/>
-			<div wicket:id="answers">
+			<h3 wicket:id="nameLabel"></h3>
+			<div class="section" wicket:id="answers">
 				<div wicket:id="questionLabel"/>
 				<div class="radio-group" wicket:id="ratingRadioGroup">
 					<input type="radio" wicket:id="one"/><wicket:message key="one"/>			
@@ -23,6 +24,7 @@
 			</div>
 			<button class="type-submit" wicket:id="submit" type="submit"><wicket:message key="submit"/></button>
 		</form>
+	</div>
 	</wicket:extend>
 </body>
 </html>

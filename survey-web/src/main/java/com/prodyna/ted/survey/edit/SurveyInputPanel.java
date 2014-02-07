@@ -1,10 +1,12 @@
 package com.prodyna.ted.survey.edit;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.wizard.WizardStep;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -51,10 +53,12 @@ public abstract class SurveyInputPanel extends WizardStep {
 		form.add(new FormComponentFeedback(nameTextField));
 		
 		form.add(new Label("fromDateLabel", new ResourceModel("fromDateLabel")));
-		form.add(new TextField<String>("fromDateTextField", new PropertyModel<String>(surveyModel, "fromDate")).add(new DatePicker()));
+		DateTextField fromDateTextField = new DateTextField("fromDateTextField", new PropertyModel<Date>(surveyModel, "fromDate"), "dd.MM.yyyy");
+		form.add(fromDateTextField.add(new DatePicker()));
 		
 		form.add(new Label("toDateLabel", new ResourceModel("toDateLabel")));
-		form.add(new TextField<String>("toDateTextField", new PropertyModel<String>(surveyModel, "toDate")).add(new DatePicker()));
+		DateTextField toDateTextField = new DateTextField("toDateTextField", new PropertyModel<Date>(surveyModel, "toDate"), "dd.MM.yyyy");
+		form.add(toDateTextField.add(new DatePicker()));
 		
 		final WebMarkupContainer listViewContainer = new WebMarkupContainer("container");
 		listViewContainer.setOutputMarkupId(true);

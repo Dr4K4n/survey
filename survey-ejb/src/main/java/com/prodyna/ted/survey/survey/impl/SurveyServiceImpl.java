@@ -14,6 +14,7 @@ import com.prodyna.ted.survey.entity.AnswerEntity;
 import com.prodyna.ted.survey.entity.SurveyEntity;
 import com.prodyna.ted.survey.exception.FunctionalException;
 import com.prodyna.ted.survey.exception.PersistenceException;
+import com.prodyna.ted.survey.persistence.Logging;
 import com.prodyna.ted.survey.persistence.PersistenceQuery;
 import com.prodyna.ted.survey.persistence.PersistenceService;
 import com.prodyna.ted.survey.survey.SurveyService;
@@ -25,6 +26,7 @@ import com.prodyna.ted.survey.survey.SurveyService;
  *
  */
 @Stateless
+@Logging
 public class SurveyServiceImpl implements SurveyService {
 	
 	@Inject
@@ -37,8 +39,7 @@ public class SurveyServiceImpl implements SurveyService {
 			Validator validator = factory.getValidator();
 			Set<ConstraintViolation<SurveyEntity>> validate = validator.validate(survey);
 			for (ConstraintViolation<SurveyEntity> constraintViolation : validate) {
-				String message = constraintViolation.getMessageTemplate();
-				throw new FunctionalException(message);
+				throw new FunctionalException(constraintViolation.getMessageTemplate() + constraintViolation.getMessage());
 			}
 			SurveyEntity surveyEntity = persistenceService.create(survey);
 			return surveyEntity;

@@ -9,15 +9,39 @@
 	<wicket:panel>
 		<form wicket:id="form">
 			<div wicket:id="feedbackPanel"/>
-			<dl>
-				<dt wicket:id="nameLabel"></dt><dd><input type="text" wicket:id="nameTextField"/><div wicket:id="nameTextFieldFeedbackPanel"/></dd>
-				<dt wicket:id="fromDateLabel"></dt><dd><input type="text" wicket:id="fromDateTextField"/></dd>
-				<dt wicket:id="toDateLabel"></dt><dd><input type="text" wicket:id="toDateTextField"/></dd>
-			</dl>
-			<div wicket:id="container">
-				<div wicket:id="questionView">
-					<div wicket:id="questionLabel"/><input type="text" wicket:id="questionTextField"/>
-					<div wicket:id="questionTextFieldFeedbackPanel"/>
+			<div class="section">
+				<dl class="dl-30-70">
+					<dt wicket:id="nameLabel"></dt>
+					<dd>
+						<div class="input-text">
+							<input type="text" wicket:id="nameTextField" />
+							<div class="input-feedback"
+								wicket:id="nameTextFieldFeedbackPanel" />
+						</div>
+					</dd>
+					<dt wicket:id="fromDateLabel"></dt>
+					<dd>
+						<div class="input-text">
+							<input type="text" wicket:id="fromDateTextField" />
+						</div>
+					</dd>
+					<dt wicket:id="toDateLabel"></dt>
+					<dd>
+						<div class="input-text">
+							<input type="text" wicket:id="toDateTextField" />
+						</div>
+					</dd>
+				</dl>
+			</div>
+			<div class="section">
+				<div wicket:id="container">
+					<div class="input in-30-70" wicket:id="questionView">
+						<div class="input-label" wicket:id="questionLabel" />
+						<div class="input-text">
+							<input type="text" wicket:id="questionTextField"/>
+							<div class="input-feedback" wicket:id="questionTextFieldFeedbackPanel"/>
+						</div>
+					</div>
 				</div>
 			</div>
 			<button wicket:id="saveSurveyButton"><wicket:message key="saveSurvey"/></button>
