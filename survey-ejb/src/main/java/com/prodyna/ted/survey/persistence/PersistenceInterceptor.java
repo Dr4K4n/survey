@@ -17,10 +17,9 @@ import org.slf4j.LoggerFactory;
 @Logging
 public class PersistenceInterceptor {
 
-	private static final Logger LOG = LoggerFactory.getLogger(PersistenceInterceptor.class);
-	
 	@AroundInvoke
 	public Object doLogging(InvocationContext context) throws Exception {
+		final Logger LOG = LoggerFactory.getLogger(context.getTarget().getClass());
 		Object proceed = null;
 		try {
 			long beforeMethodCall = System.currentTimeMillis();
