@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title wicket:id="title"></title>
+</head>
+<body>
+	<wicket:panel>
+		<form wicket:id="form">
+			<div wicket:id="feedbackPanel"/>
+			<dl>
+				<dt wicket:id="nameLabel"></dt><dd><input type="text" wicket:id="nameTextField"/><div wicket:id="nameTextFieldFeedbackPanel"/></dd>
+				<dt wicket:id="fromDateLabel"></dt><dd><input type="text" wicket:id="fromDateTextField"/></dd>
+				<dt wicket:id="toDateLabel"></dt><dd><input type="text" wicket:id="toDateTextField"/></dd>
+			</dl>
+			<div wicket:id="container">
+				<div wicket:id="questionView">
+					<div wicket:id="questionLabel"/><input type="text" wicket:id="questionTextField"/>
+					<div wicket:id="questionTextFieldFeedbackPanel"/>
+				</div>
+			</div>
+			<button wicket:id="saveSurveyButton"><wicket:message key="saveSurvey"/></button>
+			<button wicket:id="addQuestionButton"><wicket:message key="addQuestion"/></button>
+		</form>
+	</wicket:panel>
+</body>
+</html>

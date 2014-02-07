@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title wicket:id="title"></title>
+</head>
+<body>
+	<wicket:panel>
+		<form wicket:id="form">
+			<h2><wicket:message key="surveySuccessfulCreated"/></h2>
+			<dl>
+			<dt><wicket:message key="nameLabel"/></dt><dd wicket:id="name"></dd>
+			<dt><wicket:message key="fromDateLabel"/></dt><dd wicket:id="fromDate"></dd>
+			<dt><wicket:message key="toDateLabel"/></dt><dd wicket:id="toDate"></dd>
+			<dt><wicket:message key="adminLinkLabel"/></dt><dd><a href="" wicket:id="adminLink"><wicket:container wicket:id="adminLinkText"/></a></dd>
+			<dt><wicket:message key="surveyLinkLabel"/></dt><dd><a href="" wicket:id="surveyLink"><wicket:container wicket:id="surveyLinkText"/></a></dd>
+			</dl>
+			<div wicket:id="questionView">
+				<div wicket:id="questionLabel"/>
+				<div wicket:id="question"/>
+			</div>
+		</form>
+	</wicket:panel>
+</body>
+</html>
