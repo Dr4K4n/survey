@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
+import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.wizard.WizardStep;
@@ -47,7 +48,7 @@ public abstract class SurveyInputPanel extends WizardStep {
 		
 		form.add(new Label("nameLabel", new ResourceModel("nameLabel")));
 		TextField<String> nameTextField = new TextField<String>("nameTextField", new PropertyModel<String>(surveyModel, "name"));
-//		nameTextField.add(new PropertyValidator<String>());
+		nameTextField.add(new PropertyValidator<String>());
 		nameTextField.setRequired(true);
 		form.add(nameTextField);
 		form.add(new FormComponentFeedback(nameTextField));
