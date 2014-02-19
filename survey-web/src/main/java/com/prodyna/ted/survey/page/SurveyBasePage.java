@@ -1,6 +1,7 @@
 package com.prodyna.ted.survey.page;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.bootstrap.Bootstrap;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
@@ -32,6 +33,7 @@ public abstract class SurveyBasePage extends AbstractWebPage {
 	
 	@Override
 	public void renderHead(IHeaderResponse response) {
+		Bootstrap.renderHeadResponsive(response);
 		response.render(CssHeaderItem.forUrl("css/styles.css"));
 	}
 }
