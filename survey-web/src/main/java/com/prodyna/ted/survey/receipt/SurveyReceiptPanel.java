@@ -7,7 +7,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.basic.DateLabel;
-import org.apache.wicket.extensions.wizard.WizardStep;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
@@ -22,6 +21,7 @@ import com.prodyna.ted.survey.entity.QuestionEntity;
 import com.prodyna.ted.survey.entity.SurveyEntity;
 import com.prodyna.ted.survey.perform.SurveyPage;
 import com.prodyna.ted.survey.update.UpdateSurveyPage;
+import com.prodyna.ted.survey.wizard.WizardStep;
 
 /**
  * Receipt Panel for survey inputs.

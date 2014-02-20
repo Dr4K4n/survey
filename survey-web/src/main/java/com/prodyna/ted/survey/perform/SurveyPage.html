@@ -11,18 +11,51 @@
 		<div wicket:id="noSurveyFound"/>
 		<form wicket:id="form">
 			<div wicket:id="feedbackPanel"/>
-			<h3 wicket:id="nameLabel"></h3>
-			<div class="section" wicket:id="answers">
-				<div wicket:id="questionLabel"/>
-				<div class="radio-group" wicket:id="ratingRadioGroup">
-					<input type="radio" wicket:id="one"/><wicket:message key="one"/>			
-					<input type="radio" wicket:id="two"/><wicket:message key="two"/> 			
-					<input type="radio" wicket:id="three"/><wicket:message key="three"/> 			
-					<input type="radio" wicket:id="four"/><wicket:message key="four"/> 			
-					<input type="radio" wicket:id="fife"/><wicket:message key="fife"/> 			
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<wicket:container wicket:id="nameLabel"/>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<div wicket:id="answers">
+						<div wicket:id="questionLabel"/>
+						<div class="radio-group" wicket:id="ratingRadioGroup">
+						<div class="radio-inline">
+						  <label>
+						    <input wicket:id="one" type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+						    <wicket:message key="one"/>
+						  </label>
+						</div>
+						<div class="radio-inline">
+						  <label>
+						    <input wicket:id="two" type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+						    <wicket:message key="two"/>
+						  </label>
+						</div>
+						<div class="radio-inline">
+						  <label>
+						    <input wicket:id="three" type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+						    <wicket:message key="three"/>
+						  </label>
+						</div>
+						<div class="radio-inline">
+						  <label>
+						    <input wicket:id="four" type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+						    <wicket:message key="four"/>
+						  </label>
+						</div>
+						<div class="radio-inline">
+						  <label>
+						    <input wicket:id="fife" type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+						    <wicket:message key="fife"/>
+						  </label>
+						</div>
+						</div>
+					</div>
+					<button  wicket:id="submit" type="submit" class="btn btn-primary"><wicket:message key="submit"/></button>
 				</div>
 			</div>
-			<button class="type-submit" wicket:id="submit" type="submit"><wicket:message key="submit"/></button>
 		</form>
 	</div>
 	</wicket:extend>

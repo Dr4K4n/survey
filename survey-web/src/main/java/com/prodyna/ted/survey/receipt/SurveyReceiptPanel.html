@@ -7,23 +7,36 @@
 </head>
 <body>
 	<wicket:panel>
-		<form wicket:id="form">
-			<h3><wicket:message key="surveySuccessfulCreated"/></h3>
-			<div class="section">
-			<dl class="dl-30-70">
-			<dt><wicket:message key="nameLabel"/></dt><dd wicket:id="name"></dd>
-			<dt><wicket:message key="fromDateLabel"/></dt><dd wicket:id="fromDate"></dd>
-			<dt><wicket:message key="toDateLabel"/></dt><dd wicket:id="toDate"></dd>
-			<dt><wicket:message key="adminLinkLabel"/></dt><dd><a href="" wicket:id="adminLink"><wicket:container wicket:id="adminLinkText"/></a></dd>
-			<dt><wicket:message key="surveyLinkLabel"/></dt><dd><a href="" wicket:id="surveyLink"><wicket:container wicket:id="surveyLinkText"/></a></dd>
-			</dl>
+		<form wicket:id="form" class="form-horizontal" role="form">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<wicket:message key="surveySuccessfulCreated"/>
+				</h3>
 			</div>
-			<div class="section">
-			<dl class="dl-30-70" wicket:id="questionView">
-				<dt wicket:id="questionLabel"></dt>
-				<dd wicket:id="question"></dd>
-			</dl>
+			<div class="panel-body">
+				<dl class="dl-horizontal">
+					<dt><wicket:message key="nameLabel"/></dt><dd><wicket:container wicket:id="name"/></dd>
+					<dt><wicket:message key="fromDateLabel"/></dt><dd><wicket:container wicket:id="fromDate"/></dd>
+					<dt><wicket:message key="toDateLabel"/></dt><dd><wicket:container  wicket:id="toDate"/></dd>
+					<dt><wicket:message key="adminLinkLabel"/></dt><dd><a wicket:id="adminLink"><wicket:container wicket:id="adminLinkText"/></a></dd>
+					<dt><wicket:message key="surveyLinkLabel"/></dt><dd><a wicket:id="surveyLink"><wicket:container wicket:id="surveyLinkText"/></a></dd>
+				</dl>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<wicket:message key="questions"/>
+						</h3>
+					</div>
+					<div class="panel-body">
+						<dl class="dl-horizontal" wicket:id="questionView">
+							<dt wicket:id="questionLabel"></dt>
+							<dd wicket:id="question"></dd>
+						</dl>
+					</div>
+				</div>
 			</div>
+		</div>
 		</form>
 	</wicket:panel>
 </body>

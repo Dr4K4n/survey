@@ -2,11 +2,6 @@ package com.prodyna.ted.survey.update;
 
 import javax.inject.Inject;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.extensions.wizard.IWizardStep;
-import org.apache.wicket.extensions.wizard.Wizard;
-import org.apache.wicket.extensions.wizard.WizardModel;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.IModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +11,8 @@ import com.prodyna.ted.survey.entity.SurveyEntity;
 import com.prodyna.ted.survey.exception.FunctionalException;
 import com.prodyna.ted.survey.receipt.SurveyReceiptPanel;
 import com.prodyna.ted.survey.survey.SurveyService;
+import com.prodyna.ted.survey.wizard.IWizard;
+import com.prodyna.ted.survey.wizard.Wizard;
 
 /**
  * Wizard to update survey.
@@ -31,10 +28,9 @@ public class UpdateSurveyWizard extends Wizard {
 	public UpdateSurveyWizard(String id, final IModel<SurveyEntity> model) {
 		super(id);
 		setOutputMarkupId(true);
-		WizardModel wizardModel = new WizardModel();
-		wizardModel.add(new SurveyInputPanelImpl(model, model));
-		wizardModel.add(new SurveyReceiptPanel(model));
-		init(wizardModel);
+		getController().add(new SurveyInputPanelImpl(model, model));
+		getController().add(new SurveyReceiptPanel(model));
+		start();
 	}
 	
 	private static final class SurveyInputPanelImpl extends SurveyInputPanel {
@@ -57,11 +53,9 @@ public class UpdateSurveyWizard extends Wizard {
 				SurveyEntity updated = surveyService.updateSurvey(model.getObject());
 				model.setObject(updated);
 				info("Survey updated successfully!");
-				IWizardStep step = getWizardModel().getActiveStep();
-				step.applyState();
-				if (step.isComplete()) {
-					getWizardModel().next();
-				}
+				IWizard wizard = getWizard();
+				wizard.nextStep();
+				wizard.updateWizard();
 			} catch (FunctionalException e) {
 				error("Error during update survey!");
 				LOG.error("Error during update survey!", e);
@@ -74,15 +68,4 @@ public class UpdateSurveyWizard extends Wizard {
 			model.detach();
 		}
 	}
-	
-	@Override
-	protected Component newButtonBar(String id) {
-		return new EmptyPanel(id);
-	}
-	
-	@Override
-	protected Component newFeedbackPanel(String id) {
-		return new EmptyPanel(id);
-	}
-
 }

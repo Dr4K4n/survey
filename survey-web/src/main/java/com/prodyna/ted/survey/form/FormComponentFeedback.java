@@ -35,7 +35,7 @@ public class FormComponentFeedback extends Panel {
 		this.component = component;
 		Label feedbackLabel = new Label("feedback", getDefaultModel());
 		component
-				.add(new AttributeAppender("class", new ErrorClass(component)));
+				.add(new AttributeAppender("class", new ErrorClass(component), " "));
 		add(feedbackLabel);
 		setOutputMarkupId(true);
 	}
@@ -87,7 +87,7 @@ public class FormComponentFeedback extends Panel {
 			if (component.getFeedbackMessages().size() == 0) {
 				return "";
 			}
-			return "error";
+			return "has-error";
 		}
 	}
 }

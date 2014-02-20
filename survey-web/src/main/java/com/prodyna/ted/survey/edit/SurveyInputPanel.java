@@ -8,7 +8,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.wizard.WizardStep;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -27,6 +26,7 @@ import com.prodyna.ted.survey.entity.QuestionEntity;
 import com.prodyna.ted.survey.entity.SurveyEntity;
 import com.prodyna.ted.survey.form.FeedbackEvent;
 import com.prodyna.ted.survey.form.FormComponentFeedback;
+import com.prodyna.ted.survey.wizard.WizardStep;
 
 /**
  * Input Panel for survey data.
