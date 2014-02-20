@@ -7,46 +7,46 @@
 </head>
 <body>
 	<wicket:panel>
-		<form wicket:id="form">
-			<div wicket:id="feedbackPanel"/>
-			<div class="section">
-				<dl class="dl-30-70">
-					<dt wicket:id="nameLabel"></dt>
-					<dd>
-						<div class="input-text">
-							<input type="text" wicket:id="nameTextField" />
-							<div class="input-feedback"
-								wicket:id="nameTextFieldFeedbackPanel" />
-						</div>
-					</dd>
-					<dt wicket:id="fromDateLabel"></dt>
-					<dd>
-						<div class="input-text">
-							<input type="text" wicket:id="fromDateTextField" />
-						</div>
-					</dd>
-					<dt wicket:id="toDateLabel"></dt>
-					<dd>
-						<div class="input-text">
-							<input type="text" wicket:id="toDateTextField" />
-						</div>
-					</dd>
-				</dl>
-			</div>
-			<div class="section">
-				<div wicket:id="container">
-					<div class="input in-30-70" wicket:id="questionView">
-						<div class="input-label" wicket:id="questionLabel" />
-						<div class="input-text">
-							<input type="text" wicket:id="questionTextField"/>
-							<div class="input-feedback" wicket:id="questionTextFieldFeedbackPanel"/>
-						</div>
+	<form class="form-horizontal" role="form" wicket:id="form">
+	<div wicket:id="feedbackPanel"/>
+				<div class="form-group">
+					 <label wicket:id="nameLabel" class="col-sm-2 control-label">Name</label>
+					<div class="col-sm-10">
+						<input wicket:id="nameTextField" class="form-control" type="text">
+						<span wicket:id="nameTextFieldFeedbackPanel" class="help-inline">Something may have gone wrong</span>
 					</div>
 				</div>
-			</div>
-			<button wicket:id="saveSurveyButton"><wicket:message key="saveSurvey"/></button>
-			<button wicket:id="addQuestionButton"><wicket:message key="addQuestion"/></button>
-		</form>
+				<div class="form-group">
+					 <label wicket:id="fromDateLabel" class="col-sm-2 control-label">from Date</label>
+					<div class="col-sm-10">
+						<input wicket:id="fromDateTextField" class="form-control" type="text">
+					</div>
+				</div>
+				<div class="form-group">
+					 <label wicket:id="toDateLabel"  class="col-sm-2 control-label">to Date</label>
+					<div class="col-sm-10">
+						<input wicket:id="toDateTextField" class="form-control" type="text">
+						
+					</div>
+				</div>
+			    <div class="row-fluid" wicket:id="container">
+				    <div class="span12" wicket:id="questionView">
+					    <div class="form-group">
+							<label wicket:id="questionLabel" class="col-sm-2 control-label">Question</label>
+							<div class="col-sm-10">
+								<input wicket:id="questionTextField" class="form-control" type="text">
+								<span wicket:id="questionTextFieldFeedbackPanel" class="help-inline">Something may have gone wrong</span>
+							</div>
+						</div>
+				    </div>
+			    </div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						 <button wicket:id="saveSurveyButton" type="submit" class="btn btn-primary"><wicket:message key="saveSurvey"/></button>
+						 <button wicket:id="addQuestionButton" type="submit" class="btn"><wicket:message key="addQuestion"/></button>
+					</div>
+				</div>
+			</form>
 	</wicket:panel>
 </body>
 </html>

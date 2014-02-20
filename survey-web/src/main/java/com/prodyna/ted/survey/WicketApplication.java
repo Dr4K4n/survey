@@ -15,6 +15,12 @@ import com.prodyna.ted.survey.page.ErrorPage;
 import com.prodyna.ted.survey.perform.SurveyPage;
 import com.prodyna.ted.survey.update.UpdateSurveyPage;
 
+import de.agilecoders.wicket.core.Bootstrap;
+import de.agilecoders.wicket.core.settings.BootstrapSettings;
+import de.agilecoders.wicket.webjars.WicketWebjars;
+import de.agilecoders.wicket.webjars.collectors.VfsJarAssetPathCollector;
+import de.agilecoders.wicket.webjars.settings.WebjarsSettings;
+
 /**
  * Settings and configuration of application.
  * 
@@ -54,6 +60,15 @@ public class WicketApplication extends WebApplication
 		
 		// Configure Error Page
 		getApplicationSettings().setInternalErrorPage(ErrorPage.class);
+		getMarkupSettings().setStripWicketTags(true);
+		
+		WebjarsSettings webjarsSettings = new WebjarsSettings();
+		webjarsSettings.assetPathCollectors(new VfsJarAssetPathCollector());
+		
+		WicketWebjars.install(this, webjarsSettings);
+		BootstrapSettings settings = new BootstrapSettings();
+		
+		Bootstrap.install(this, settings);
 	}
 
 

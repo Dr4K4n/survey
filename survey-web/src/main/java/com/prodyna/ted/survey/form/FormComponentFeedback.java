@@ -1,7 +1,7 @@
 package com.prodyna.ted.survey.form;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.FeedbackMessages;
@@ -35,7 +35,7 @@ public class FormComponentFeedback extends Panel {
 		this.component = component;
 		Label feedbackLabel = new Label("feedback", getDefaultModel());
 		component
-				.add(new AttributeModifier("class", new ErrorClass(component)));
+				.add(new AttributeAppender("class", new ErrorClass(component)));
 		add(feedbackLabel);
 		setOutputMarkupId(true);
 	}

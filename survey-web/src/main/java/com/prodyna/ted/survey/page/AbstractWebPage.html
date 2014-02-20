@@ -6,17 +6,46 @@
 <title wicket:id="title"></title>
 </head>
 <body>
-	<div id="header">
-		<div wicket:id="header" />
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="page-header">
+				<div class="row clearfix">
+					<div class="col-md-4 column">
+						<div wicket:id="header"/>
+					</div>
+					<div class="col-md-8 column">
+						<h1>
+							PRODYNA Survey <small>by TED</small>
+						</h1>
+					</div>
+				</div>
+			</div>
+			<div wicket:id="navigation">
+				<ul class="nav nav-pills">
+					<li class="active">
+						<a href="#">Home</a>
+					</li>
+					<li>
+						<a href="#">Profile</a>
+					</li>
+					<li class="disabled">
+						<a href="#">Messages</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
-	<div id="navigation">
-		<div wicket:id="navigation" />
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<wicket:child/>
+		</div>
 	</div>
-	<div id="content">
-		<wicket:child/>
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div wicket:id="footer"/>
+		</div>
 	</div>
-	<div id="footer">
-		<div wicket:id="footer"/>
-	</div>
+</div>
 </body>
 </html>
