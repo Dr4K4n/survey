@@ -26,10 +26,12 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
+import org.apache.wicket.util.string.StringValueConversionException;
 
 import com.prodyna.ted.survey.entity.AnswerEntity;
 import com.prodyna.ted.survey.entity.QuestionEntity;
 import com.prodyna.ted.survey.entity.Rating;
+import com.prodyna.ted.survey.entity.SurveyEntity;
 import com.prodyna.ted.survey.exception.FunctionalException;
 import com.prodyna.ted.survey.page.SurveyBasePage;
 import com.prodyna.ted.survey.survey.SurveyService;
@@ -49,7 +51,14 @@ public class SurveyPage extends SurveyBasePage {
 	
 	public SurveyPage(PageParameters parameters) {
 		StringValue idValue = parameters.get("id");
-		LoadSurveyModel model = new LoadSurveyModel(idValue.toLongObject());
+		IModel<SurveyEntity> model = new Model<SurveyEntity>();
+		if (!idValue.isNull()) {
+			try {
+				Long longObject = idValue.toLongObject();
+				model = new LoadSurveyModel(longObject);
+			} catch (StringValueConversionException e) {
+			}
+		}
 		
 		Label noSurveyFound = new Label("noSurveyFound", new ResourceModel("noSurveyFround"));
 		noSurveyFound.add(setVisibleIf(or(isNull(Model.of(idValue)), isNull(new PropertyModel<Long>(model, "id")))));
