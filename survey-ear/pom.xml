@@ -117,7 +117,7 @@
       <profile>
 			<id>dev</id>
 			<properties>
-				<autodeploy>D:\Development\jboss-as-7.1.1.Final\standalone\deployments</autodeploy>
+				<autodeploy>C:\Software\jboss-as-7.1.1.Final\standalone\deployments</autodeploy>
 			</properties>
 		</profile>
    </profiles>

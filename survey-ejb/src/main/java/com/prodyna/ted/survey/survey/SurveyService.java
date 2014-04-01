@@ -10,19 +10,18 @@ import com.prodyna.ted.survey.exception.FunctionalException;
  * CRUD Services for {@link SurveyEntity}.
  * 
  * @author Daniel Knipping, PRODYNA AG
- *
  */
 public interface SurveyService {
 
-	/**
-	 * Creates a Survey.
-	 * 
-	 * @param survey Survey to create.
-	 * @return persisted Survey.
-	 * @throws FunctionalException if an error occurs.
-	 */
-    SurveyEntity createSurvey(SurveyEntity survey) throws FunctionalException;
-    
+    /**
+     * Creates a Survey.
+     * 
+     * @param survey Survey to create.
+     * @return persisted Survey.
+     * @throws FunctionalException if an error occurs.
+     */
+    SurveyEntity createSurvey(SurveyEntity survey);
+
     /**
      * Deletes the given Survey.
      * 
@@ -30,8 +29,8 @@ public interface SurveyService {
      * @return deleted survey.
      * @throws FunctionalException if an error occurs.
      */
-    SurveyEntity deleteSurvey(SurveyEntity survey) throws FunctionalException;
-    
+    SurveyEntity deleteSurvey(SurveyEntity survey);
+
     /**
      * Updates the given Survey.
      * 
@@ -39,8 +38,8 @@ public interface SurveyService {
      * @return updated Survey.
      * @throws FunctionalException if an error occurs.
      */
-    SurveyEntity updateSurvey(SurveyEntity survey) throws FunctionalException;
-    
+    SurveyEntity updateSurvey(SurveyEntity survey);
+
     /**
      * Find Survey by id.
      * 
@@ -48,22 +47,21 @@ public interface SurveyService {
      * @return the id matching Survey.
      * @throws FunctionalException if an error occurs.
      */
-    SurveyEntity findSurveyById(Long id) throws FunctionalException;
-    
+    SurveyEntity findSurveyById(Long id);
+
     /**
      * Find all Surveys.
      * 
      * @return List of all Surveys.
      * @throws FunctionalException if an error occurs.
      */
-    List<SurveyEntity> findAllSurvey() throws FunctionalException;
-    
+    List<SurveyEntity> findAllSurvey();
+
     /**
      * Persists the given Answers.
      * 
      * @param answerList Answers to persist.
      * @throws FunctionalException if an error occurs.
      */
-    void persistAllAnswer(List<AnswerEntity> answerList) throws FunctionalException;
+    void persistAllAnswer(List<AnswerEntity> answerList);
 }
-

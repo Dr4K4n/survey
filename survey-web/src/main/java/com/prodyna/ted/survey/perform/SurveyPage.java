@@ -32,7 +32,7 @@ import com.prodyna.ted.survey.entity.AnswerEntity;
 import com.prodyna.ted.survey.entity.QuestionEntity;
 import com.prodyna.ted.survey.entity.Rating;
 import com.prodyna.ted.survey.entity.SurveyEntity;
-import com.prodyna.ted.survey.exception.FunctionalException;
+import com.prodyna.ted.survey.exception.FunctionalRuntimeException;
 import com.prodyna.ted.survey.page.SurveyBasePage;
 import com.prodyna.ted.survey.survey.SurveyService;
 
@@ -40,124 +40,120 @@ import com.prodyna.ted.survey.survey.SurveyService;
  * Page to perform a survey.
  * 
  * @author Daniel Knipping, PRODYNA AG
- *
  */
 public class SurveyPage extends SurveyBasePage {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Inject
-	private SurveyService service;
-	
-	public SurveyPage(PageParameters parameters) {
-		StringValue idValue = parameters.get("id");
-		IModel<SurveyEntity> model = new Model<SurveyEntity>();
-		if (!idValue.isNull()) {
-			try {
-				Long longObject = idValue.toLongObject();
-				model = new LoadSurveyModel(longObject);
-			} catch (StringValueConversionException e) {
-			}
-		}
-		
-		Label noSurveyFound = new Label("noSurveyFound", new ResourceModel("noSurveyFround"));
-		noSurveyFound.add(setVisibleIf(or(isNull(Model.of(idValue)), isNull(new PropertyModel<Long>(model, "id")))));
-		add(noSurveyFound);
-		
-		Form<Void> form = new Form<Void>("form");
-		form.add(setInvisibleIf(or(isNull(Model.of(idValue)), isNull(new PropertyModel<Long>(model, "id")))));
-		add(form);
-		
-		form.add(new FeedbackPanel("feedbackPanel"));
-		form.add(new Label("nameLabel", new PropertyModel<String>(model, "name")));
-		
-	    final IModel<List<AnswerEntity>> answerModel = new AnswerModel(new PropertyModel<List<QuestionEntity>>(model, "questions"));
-		ListView<AnswerEntity> answers = new AnswersListView("answers", answerModel);
-		form.add(answers);
-		
-		form.add(new SubmitSurveyButton("submit", answerModel));
-	}
-	
-	private static final class AnswersListView extends ListView<AnswerEntity> {
-		private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-		private AnswersListView(String id,
-				IModel<? extends List<? extends AnswerEntity>> model) {
-			super(id, model);
-		}
+    @Inject
+    private SurveyService service;
 
-		@Override
-		protected void populateItem(ListItem<AnswerEntity> item) {
-			item.add(new Label("questionLabel", new PropertyModel<String>(item.getModel(), "questionEntity.question")));
-			RadioGroup<Rating> radioGroup = new RadioGroup<Rating>("ratingRadioGroup", new PropertyModel<Rating>(item.getModel(), "rating"));
-			radioGroup.add(new Radio<Rating>("one", Model.of(Rating.ONE), radioGroup));
-			radioGroup.add(new Radio<Rating>("two", Model.of(Rating.TWO), radioGroup));
-			radioGroup.add(new Radio<Rating>("three", Model.of(Rating.THREE), radioGroup));
-			radioGroup.add(new Radio<Rating>("four", Model.of(Rating.FOUR), radioGroup));
-			radioGroup.add(new Radio<Rating>("fife", Model.of(Rating.FIFE), radioGroup));
-			item.add(radioGroup);
-		}
-	}
+    public SurveyPage(PageParameters parameters) {
+        StringValue idValue = parameters.get("id");
+        IModel<SurveyEntity> model = new Model<SurveyEntity>();
+        if (!idValue.isNull()) {
+            try {
+                Long longObject = idValue.toLongObject();
+                model = new LoadSurveyModel(longObject);
+            } catch (StringValueConversionException e) {
+            }
+        }
 
-	private final class SubmitSurveyButton extends Button {
-		private final IModel<List<AnswerEntity>> answerModel;
-		private static final long serialVersionUID = 1L;
+        Label noSurveyFound = new Label("noSurveyFound", new ResourceModel("noSurveyFround"));
+        noSurveyFound.add(setVisibleIf(or(isNull(Model.of(idValue)), isNull(new PropertyModel<Long>(model, "id")))));
+        add(noSurveyFound);
 
-		private SubmitSurveyButton(String id,
-				IModel<List<AnswerEntity>> answerModel) {
-			super(id);
-			this.answerModel = answerModel;
-		}
+        Form<Void> form = new Form<Void>("form");
+        form.add(setInvisibleIf(or(isNull(Model.of(idValue)), isNull(new PropertyModel<Long>(model, "id")))));
+        add(form);
 
-		@Override
-		public void onSubmit() {
-			super.onSubmit();
-			try {
-				service.persistAllAnswer(answerModel.getObject());
-				info("Survey successful!");
-			} catch (FunctionalException e) {
-				error("Could not save survey");
-				e.printStackTrace();
-			}
-		}
-		
-		@Override
-		public void detachModels() {
-			super.detachModels();
-			answerModel.detach();
-		}
-	}
+        form.add(new FeedbackPanel("feedbackPanel"));
+        form.add(new Label("nameLabel", new PropertyModel<String>(model, "name")));
 
-	private static class AnswerModel extends LoadableDetachableModel<List<AnswerEntity>> {
-		private static final long serialVersionUID = 1L;
-		
-		private IModel<List<QuestionEntity>> questions;
+        final IModel<List<AnswerEntity>> answerModel = new AnswerModel(new PropertyModel<List<QuestionEntity>>(model, "questions"));
+        ListView<AnswerEntity> answers = new AnswersListView("answers", answerModel);
+        form.add(answers);
 
-		public AnswerModel(IModel<List<QuestionEntity>> questions) {
-			this.questions = questions;
-		}
-		
-		@Override
-		protected List<AnswerEntity> load() {
-			List<AnswerEntity> answers = new ArrayList<AnswerEntity>();
-			for (QuestionEntity question : questions.getObject()) {
-				AnswerEntity answer = new AnswerEntity();
-				answer.setQuestionEntity(question);
-				answers.add(answer);
-			}
-			return answers;
-		}
-		
-		@Override
-		protected void onDetach() {
-			super.onDetach();
-			questions.detach();
-		}
-	}
+        form.add(new SubmitSurveyButton("submit", answerModel));
+    }
 
-	@Override
-	protected Component createTitle(String id) {
-		return new Label(id, new ResourceModel("title"));
-	}
+    private static final class AnswersListView extends ListView<AnswerEntity> {
+        private static final long serialVersionUID = 1L;
+
+        private AnswersListView(String id, IModel<? extends List<? extends AnswerEntity>> model) {
+            super(id, model);
+        }
+
+        @Override
+        protected void populateItem(ListItem<AnswerEntity> item) {
+            item.add(new Label("questionLabel", new PropertyModel<String>(item.getModel(), "questionEntity.question")));
+            RadioGroup<Rating> radioGroup = new RadioGroup<Rating>("ratingRadioGroup", new PropertyModel<Rating>(item.getModel(), "rating"));
+            radioGroup.add(new Radio<Rating>("one", Model.of(Rating.ONE), radioGroup));
+            radioGroup.add(new Radio<Rating>("two", Model.of(Rating.TWO), radioGroup));
+            radioGroup.add(new Radio<Rating>("three", Model.of(Rating.THREE), radioGroup));
+            radioGroup.add(new Radio<Rating>("four", Model.of(Rating.FOUR), radioGroup));
+            radioGroup.add(new Radio<Rating>("fife", Model.of(Rating.FIFE), radioGroup));
+            item.add(radioGroup);
+        }
+    }
+
+    private final class SubmitSurveyButton extends Button {
+        private final IModel<List<AnswerEntity>> answerModel;
+        private static final long serialVersionUID = 1L;
+
+        private SubmitSurveyButton(String id, IModel<List<AnswerEntity>> answerModel) {
+            super(id);
+            this.answerModel = answerModel;
+        }
+
+        @Override
+        public void onSubmit() {
+            super.onSubmit();
+            try {
+                service.persistAllAnswer(answerModel.getObject());
+                info("Survey successful!");
+            } catch (FunctionalRuntimeException e) {
+                error("Could not save survey");
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void detachModels() {
+            super.detachModels();
+            answerModel.detach();
+        }
+    }
+
+    private static class AnswerModel extends LoadableDetachableModel<List<AnswerEntity>> {
+        private static final long serialVersionUID = 1L;
+
+        private final IModel<List<QuestionEntity>> questions;
+
+        public AnswerModel(IModel<List<QuestionEntity>> questions) {
+            this.questions = questions;
+        }
+
+        @Override
+        protected List<AnswerEntity> load() {
+            List<AnswerEntity> answers = new ArrayList<AnswerEntity>();
+            for (QuestionEntity question : questions.getObject()) {
+                AnswerEntity answer = new AnswerEntity();
+                answer.setQuestionEntity(question);
+                answers.add(answer);
+            }
+            return answers;
+        }
+
+        @Override
+        protected void onDetach() {
+            super.onDetach();
+            questions.detach();
+        }
+    }
+
+    @Override
+    protected Component createTitle(String id) {
+        return new Label(id, new ResourceModel("title"));
+    }
 }
-

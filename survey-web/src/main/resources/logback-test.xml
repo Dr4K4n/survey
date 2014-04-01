@@ -1,0 +1,36 @@
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>servey-web.log</file>
+
+    <encoder>
+      <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="PERFORM_LOG" class="ch.qos.logback.core.FileAppender">
+    <file>perform.log</file>
+
+    <encoder>
+      <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <logger name="com.prodyna.ted.survey.form" level="WARN"/>
+  <logger name="com.prodyna.ted.survey.perform" level="INFO">
+  	<appender-ref ref="PERFORM_LOG" />
+  </logger>
+
+  <root level="debug">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE" />
+  </root>
+</configuration>
