@@ -76,11 +76,11 @@
             </dependency>
             
             <!-- Logging -->
-            <!-- <dependency> 
-  				<groupId>ch.qos.logback</groupId>
-  				<artifactId>logback-classic</artifactId>
-  				<version>1.0.13</version>
-			</dependency> -->
+            <dependency>
+    			<groupId>ch.qos.logback</groupId>
+    			<artifactId>logback-classic</artifactId>
+    			<version>1.1.1</version>
+    		</dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -115,12 +115,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <dependencies>
-    	<dependency>
-    		<groupId>ch.qos.logback</groupId>
-    		<artifactId>logback-classic</artifactId>
-    		<version>1.1.1</version>
-    	</dependency>
-    </dependencies>
 </project>

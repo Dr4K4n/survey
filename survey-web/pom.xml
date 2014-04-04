@@ -132,6 +132,12 @@
 			<artifactId>seam-conversation-weld</artifactId>
 			<version>3.0.0.Final</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+    		<artifactId>logback-classic</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

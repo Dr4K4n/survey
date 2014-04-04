@@ -1,5 +1,6 @@
 package com.prodyna.ted.survey.survey.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -10,6 +11,9 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import com.prodyna.ted.survey.common.Message;
+import com.prodyna.ted.survey.common.Message.Severity;
+import com.prodyna.ted.survey.common.ServiceResult;
 import com.prodyna.ted.survey.entity.AnswerEntity;
 import com.prodyna.ted.survey.entity.SurveyEntity;
 import com.prodyna.ted.survey.exception.FunctionalRuntimeException;
@@ -32,57 +36,70 @@ public class SurveyServiceImpl implements SurveyService {
     private PersistenceService persistenceService;
 
     @Override
-    public SurveyEntity createSurvey(SurveyEntity survey) {
+    public ServiceResult<SurveyEntity> createSurvey(SurveyEntity survey) {
         try {
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
             Set<ConstraintViolation<SurveyEntity>> validate = validator.validate(survey);
+            List<Message> messages = new ArrayList<Message>();
             for (ConstraintViolation<SurveyEntity> constraintViolation : validate) {
-                throw new FunctionalRuntimeException(constraintViolation.getMessageTemplate() + constraintViolation.getMessage());
+                messages.add(new Message(constraintViolation.getMessage(), constraintViolation.getMessage(), Severity.WARN));
             }
-            SurveyEntity surveyEntity = persistenceService.create(survey);
-            return surveyEntity;
+            SurveyEntity surveyEntity;
+            if (messages.isEmpty()) {
+                surveyEntity = persistenceService.create(survey);
+            } else {
+                surveyEntity = survey;
+            }
+            return ServiceResult.createServiceResult(surveyEntity, messages);
+
         } catch (PersistenceException e) {
             throw new FunctionalRuntimeException(e.getMessage());
         }
     }
 
     @Override
-    public SurveyEntity deleteSurvey(SurveyEntity survey) {
+    public ServiceResult<SurveyEntity> deleteSurvey(SurveyEntity survey) {
         try {
-            SurveyEntity findSurveyById = findSurveyById(survey.getId());
-            SurveyEntity delete = persistenceService.delete(findSurveyById);
-            return delete;
+            ServiceResult<SurveyEntity> findSurveyById = findSurveyById(survey.getId());
+            SurveyEntity delete;
+            if (findSurveyById.getMessages().isEmpty()) {
+                delete = persistenceService.delete(findSurveyById.getResult());
+            } else {
+                delete = survey;
+            }
+            return ServiceResult.createServiceResult(delete, findSurveyById.getMessages());
         } catch (PersistenceException e) {
             throw new FunctionalRuntimeException(e.getMessage());
         }
     }
 
     @Override
-    public SurveyEntity updateSurvey(SurveyEntity survey) {
+    public ServiceResult<SurveyEntity> updateSurvey(SurveyEntity survey) {
         try {
             SurveyEntity update = persistenceService.update(survey);
-            return update;
+            return ServiceResult.createServiceResultNoMessage(update);
         } catch (PersistenceException e) {
             throw new FunctionalRuntimeException(e.getMessage());
         }
     }
 
     @Override
-    public SurveyEntity findSurveyById(Long id) {
+    public ServiceResult<SurveyEntity> findSurveyById(Long id) {
         try {
             PersistenceQuery<SurveyEntity> query = persistenceService.createQuery("Select s from SurveyEntity s where id = :id", SurveyEntity.class);
             query.setParameter("id", id);
-            return query.getSingleResult();
+            return ServiceResult.createServiceResultNoMessage(query.getSingleResult());
         } catch (PersistenceException e) {
             throw new FunctionalRuntimeException(e.getMessage());
         }
     }
 
     @Override
-    public List<SurveyEntity> findAllSurvey() {
+    public ServiceResult<List<SurveyEntity>> findAllSurvey() {
         try {
-            return persistenceService.createQuery("Select s from SurveyEntity s", SurveyEntity.class).getResultList();
+            List<SurveyEntity> resultList = persistenceService.createQuery("Select s from SurveyEntity s", SurveyEntity.class).getResultList();
+            return ServiceResult.createServiceResultNoMessage(resultList);
         } catch (PersistenceException e) {
             throw new FunctionalRuntimeException(e.getCause());
         }

@@ -2,6 +2,7 @@ package com.prodyna.ted.survey.survey;
 
 import java.util.List;
 
+import com.prodyna.ted.survey.common.ServiceResult;
 import com.prodyna.ted.survey.entity.AnswerEntity;
 import com.prodyna.ted.survey.entity.SurveyEntity;
 import com.prodyna.ted.survey.exception.FunctionalException;
@@ -20,7 +21,7 @@ public interface SurveyService {
      * @return persisted Survey.
      * @throws FunctionalException if an error occurs.
      */
-    SurveyEntity createSurvey(SurveyEntity survey);
+    ServiceResult<SurveyEntity> createSurvey(SurveyEntity survey);
 
     /**
      * Deletes the given Survey.
@@ -29,7 +30,7 @@ public interface SurveyService {
      * @return deleted survey.
      * @throws FunctionalException if an error occurs.
      */
-    SurveyEntity deleteSurvey(SurveyEntity survey);
+    ServiceResult<SurveyEntity> deleteSurvey(SurveyEntity survey);
 
     /**
      * Updates the given Survey.
@@ -38,7 +39,7 @@ public interface SurveyService {
      * @return updated Survey.
      * @throws FunctionalException if an error occurs.
      */
-    SurveyEntity updateSurvey(SurveyEntity survey);
+    ServiceResult<SurveyEntity> updateSurvey(SurveyEntity survey);
 
     /**
      * Find Survey by id.
@@ -47,7 +48,7 @@ public interface SurveyService {
      * @return the id matching Survey.
      * @throws FunctionalException if an error occurs.
      */
-    SurveyEntity findSurveyById(Long id);
+    ServiceResult<SurveyEntity> findSurveyById(Long id);
 
     /**
      * Find all Surveys.
@@ -55,7 +56,7 @@ public interface SurveyService {
      * @return List of all Surveys.
      * @throws FunctionalException if an error occurs.
      */
-    List<SurveyEntity> findAllSurvey();
+    ServiceResult<List<SurveyEntity>> findAllSurvey();
 
     /**
      * Persists the given Answers.

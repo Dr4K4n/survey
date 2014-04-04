@@ -46,13 +46,13 @@ public class SurveyTest {
     public void testSurvey() {
         SurveyEntity entity = new SurveyEntity();
         entity.setName("Test");
-        SurveyEntity survey = surveyService.createSurvey(entity);
+        SurveyEntity survey = surveyService.createSurvey(entity).getResult();
         Assert.assertNotNull(survey.getId());
         survey.setName("Test2");
-        SurveyEntity updateSurvey = surveyService.updateSurvey(survey);
+        SurveyEntity updateSurvey = surveyService.updateSurvey(survey).getResult();
         Assert.assertEquals(new Long(1), updateSurvey.getId());
         Assert.assertEquals("Test2", updateSurvey.getName());
-        SurveyEntity deleteSurvey = surveyService.deleteSurvey(survey);
+        SurveyEntity deleteSurvey = surveyService.deleteSurvey(survey).getResult();
         boolean deleted = false;
         try {
             surveyService.findSurveyById(deleteSurvey.getId());
@@ -72,7 +72,7 @@ public class SurveyTest {
         question = new QuestionEntity();
         question.setQuestion("second Question?");
         entity.getQuestions().add(question);
-        SurveyEntity survey = surveyService.createSurvey(entity);
+        SurveyEntity survey = surveyService.createSurvey(entity).getResult();
         Assert.assertNotNull(survey.getId());
         Assert.assertEquals(2, survey.getQuestions().size());
 

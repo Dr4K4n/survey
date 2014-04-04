@@ -47,17 +47,16 @@ public class CreateSurveyWizard extends Wizard {
 
         @Override
         protected void doAction() {
-            try {
                 SurveyEntity createSurvey = surveyService.createSurvey(model.getObject());
                 model.setObject(createSurvey);
                 info("Survey erfolgreich angelegt");
                 IWizard wizard = getWizard();
                 wizard.nextStep();
                 wizard.updateWizard();
-            } catch (FunctionalRuntimeException e) {
-                error("Could not create survey!");
-                LOG.error("Could not create survey!", e);
-            }
+                
+                for (String errorStr : wrapper.getErrorList()) {
+                    error(errorStr);
+                }
         }
 
         @Override
