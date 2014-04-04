@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title wicket:id="title"></title>
+</head>
+<body>
+	<wicket:panel>
+		<wicket:message key="surveyDescriptionTitle">[Description]</wicket:message>
+		<span wicket:id="surveyDescription"></span><br>
+		<wicket:message key="noOfQuestionsTitle">[Number of Questions]</wicket:message>
+		<span wicket:id="noOfQuestions"></span><br>
+		<wicket:message key="noOfAnswersTitle">[Number of Answers]</wicket:message>
+		<span wicket:id="noOfAnswers"></span><br>
+		
+		<div id="placeholder" style="width:600px;height:300px"></div>
+		<div id="placeholderPie" style="width:600px;height:300px"></div>
+<!-- 		<input type="hidden" wicket:id="dataField"></input> -->
+		<script>
+		$(function(){
+				// Example Data
+
+// 				var data = [
+// 					{ label: "Series1",  data: 10},
+// 					{ label: "Series2",  data: 30},
+// 					{ label: "Series3",  data: 90},
+// 					{ label: "Series4",  data: 70},
+// 					{ label: "Series5",  data: 80},
+// 					{ label: "Series6",  data: 110}
+// 				];
+				
+			$.plot($("#placeholder"), [ [[0, 0], [1, 1]] ], { yaxis: { max: 1 } });
+			
+			$.plot('#placeholderPie', data, {
+				series: {
+			        pie: {
+			            show: true
+			        }
+			    },
+			    legend: {
+			        show: false
+			    }
+			});
+		});
+		</script>
+	</wicket:panel>
+</body>
+</html>
