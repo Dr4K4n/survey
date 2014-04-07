@@ -33,8 +33,7 @@ import com.prodyna.ted.survey.entity.AnswerEntity;
 import com.prodyna.ted.survey.entity.QuestionEntity;
 import com.prodyna.ted.survey.entity.Rating;
 import com.prodyna.ted.survey.entity.SurveyEntity;
-import com.prodyna.ted.survey.statistics.entity.SurveyStatistics1;
-import com.prodyna.ted.survey.statistics.entity.SurveyStatistics2;
+import com.prodyna.ted.survey.statistics.entity.SurveyQuestionAnswerStatistic;
 import com.prodyna.ted.survey.survey.SurveryStatisticsService;
 
 public class ViewSurveyPanel extends Panel {
@@ -44,12 +43,12 @@ public class ViewSurveyPanel extends Panel {
     @Inject
     private SurveryStatisticsService surveyStatisticsService;
 
-    private final IModel<SurveyStatistics1> model = Model.of();
+    private final IModel<SurveyQuestionAnswerStatistic> model = Model.of();
 
     public ViewSurveyPanel(final String id, final IModel<SurveyEntity> surveyModel) {
         super(id, surveyModel);
         setOutputMarkupId(true);
-        model.setObject(surveyStatisticsService.getStatistics1ForSurvey(((SurveyEntity) getDefaultModelObject())));
+        model.setObject(surveyStatisticsService.getQuestionAnswerStatisticForSurvey(((SurveyEntity) getDefaultModelObject()).getId()));
         add(new Label("surveyDescription", new PropertyModel<String>(model, "survey.name")));
         add(new Label("noOfQuestions", new PropertyModel<String>(model, "numberOfQuestions")));
         add(new Label("noOfAnswers", new PropertyModel<String>(model, "numberOfAnswers")));
@@ -83,10 +82,11 @@ public class ViewSurveyPanel extends Panel {
             @Override
             public RadarChartData<RadarDataSet> getObject() {
                 RadarChartData<RadarDataSet> radarChartData = new RadarChartData<RadarDataSet>();
-                SurveyStatistics2 sust2 = surveyStatisticsService.getStatistics2ForSurvey(getModelObject());
+                SurveyQuestionAnswerStatistic questionAnswerStatistic =
+                    surveyStatisticsService.getQuestionAnswerStatisticForSurvey(((SurveyEntity) getDefaultModelObject()).getId());
 
                 int i = 0;
-                for (List<AnswerEntity> answerEntities : sust2.getQuestionToAnserMap().values()) {
+                for (List<AnswerEntity> answerEntities : questionAnswerStatistic.getQuestionToAnserMap().values()) {
                     List<Integer> values = Arrays.asList(new Integer[]{0, 0, 0, 0, 0});
                     for (AnswerEntity ae : answerEntities) {
                         if (ae != null && ae.getRating() != null) {
@@ -146,11 +146,12 @@ public class ViewSurveyPanel extends Panel {
             true));
 
         List<JSONObject> jsonObjectList = new ArrayList<JSONObject>();
-        SurveyStatistics2 sust2 = surveyStatisticsService.getStatistics2ForSurvey(getModelObject());
+        SurveyQuestionAnswerStatistic questionAnswerStatistic =
+            surveyStatisticsService.getQuestionAnswerStatisticForSurvey(((SurveyEntity) getDefaultModelObject()).getId());
 
         int[][][] answers = new int[5][][];
 
-        int questionCount = sust2.getQuestionToAnserMap().size();
+        int questionCount = questionAnswerStatistic.getQuestionToAnserMap().size();
         answers[Rating.ONE.ordinal()] = new int[questionCount][];
         answers[Rating.TWO.ordinal()] = new int[questionCount][];
         answers[Rating.THREE.ordinal()] = new int[questionCount][];
@@ -158,7 +159,7 @@ public class ViewSurveyPanel extends Panel {
         answers[Rating.FIFE.ordinal()] = new int[questionCount][];
 
         int index = 0;
-        for (Entry<QuestionEntity, List<AnswerEntity>> entry : sust2.getQuestionToAnserMap().entrySet()) {
+        for (Entry<QuestionEntity, List<AnswerEntity>> entry : questionAnswerStatistic.getQuestionToAnserMap().entrySet()) {
             for (AnswerEntity answer : entry.getValue()) {
                 int[][] answerCountArray = answers[answer.getRating().ordinal()];
                 int[] answerCount = answerCountArray[index];
