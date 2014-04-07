@@ -69,6 +69,8 @@ public class WicketApplication extends WebApplication
 		BootstrapSettings settings = new BootstrapSettings();
 		
 		Bootstrap.install(this, settings);
+		
+		getPageSettings().setVersionPagesByDefault(false);
 	}
 
 
