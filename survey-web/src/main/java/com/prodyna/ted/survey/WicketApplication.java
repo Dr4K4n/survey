@@ -14,6 +14,7 @@ import com.prodyna.ted.survey.create.CreateSurveyPage;
 import com.prodyna.ted.survey.page.ErrorPage;
 import com.prodyna.ted.survey.perform.SurveyPage;
 import com.prodyna.ted.survey.statistic.SelectSurveyPage;
+import com.prodyna.ted.survey.statistic.ViewSurveyPage;
 import com.prodyna.ted.survey.update.UpdateSurveyPage;
 
 import de.agilecoders.wicket.core.Bootstrap;
@@ -54,6 +55,7 @@ public class WicketApplication extends WebApplication {
         mountPage("/survey", SurveyPage.class);
         mountPage("/surveyAdmin", UpdateSurveyPage.class);
         mountPage("/statistic", SelectSurveyPage.class);
+        mountPage("/statisticDetail", ViewSurveyPage.class);
 
         // Configure Error Page
         getApplicationSettings().setInternalErrorPage(ErrorPage.class);

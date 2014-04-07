@@ -132,6 +132,12 @@
 			<artifactId>seam-conversation-weld</artifactId>
 			<version>3.0.0.Final</version>
 		</dependency>
+	
+		<dependency>
+			<groupId>com.pingunaut</groupId>
+			<artifactId>wicket-chartjs</artifactId>
+			<version>6.14.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

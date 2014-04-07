@@ -13,33 +13,31 @@
 		<span wicket:id="noOfQuestions"></span><br>
 		<wicket:message key="noOfAnswersTitle">[Number of Answers]</wicket:message>
 		<span wicket:id="noOfAnswers"></span><br>
+		<div wicket:id="lineChartPanel"></div>
+		<div wicket:id="radarChartPanel" style="width: 600px; height:300px;"></div>
 		
-		<div id="placeholder" style="width:600px;height:300px"></div>
-		<div id="placeholderPie" style="width:600px;height:300px"></div>
+		<div id="allAnswersStackedChart" style="width:600px;height:300px"></div>
 <!-- 		<input type="hidden" wicket:id="dataField"></input> -->
 		<script>
 		$(function(){
-				// Example Data
-
-// 				var data = [
-// 					{ label: "Series1",  data: 10},
-// 					{ label: "Series2",  data: 30},
-// 					{ label: "Series3",  data: 90},
-// 					{ label: "Series4",  data: 70},
-// 					{ label: "Series5",  data: 80},
-// 					{ label: "Series6",  data: 110}
-// 				];
-				
-			$.plot($("#placeholder"), [ [[0, 0], [1, 1]] ], { yaxis: { max: 1 } });
 			
-			$.plot('#placeholderPie', data, {
+			
+			
+			$.plot('#allAnswersStackedChart', data, {
 				series: {
-			        pie: {
-			            show: true
+			        stack: 0,
+			        lines: {
+			            show: false,
+			            fill: true,
+			            steps: false
+			        },
+			        bars: {
+			        	show: true,
+			        	barWidth: 0.6
 			        }
 			    },
 			    legend: {
-			        show: false
+			        show: true
 			    }
 			});
 		});
