@@ -6,9 +6,9 @@ import org.apache.wicket.model.IModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.prodyna.ted.survey.common.ServiceResult;
 import com.prodyna.ted.survey.edit.SurveyInputPanel;
 import com.prodyna.ted.survey.entity.SurveyEntity;
-import com.prodyna.ted.survey.exception.FunctionalRuntimeException;
 import com.prodyna.ted.survey.receipt.SurveyReceiptPanel;
 import com.prodyna.ted.survey.survey.SurveyService;
 import com.prodyna.ted.survey.wizard.IWizard;
@@ -47,17 +47,13 @@ public class UpdateSurveyWizard extends Wizard {
 
         @Override
         protected void doAction() {
-            try {
-                SurveyEntity updated = surveyService.updateSurvey(model.getObject());
-                model.setObject(updated);
-                info("Survey updated successfully!");
-                IWizard wizard = getWizard();
-                wizard.nextStep();
-                wizard.updateWizard();
-            } catch (FunctionalRuntimeException e) {
-                error("Error during update survey!");
-                LOG.error("Error during update survey!", e);
-            }
+            ServiceResult<SurveyEntity> updated = surveyService.updateSurvey(model.getObject());
+
+            model.setObject(updated.getResult());
+            info("Survey updated successfully!");
+            IWizard wizard = getWizard();
+            wizard.nextStep();
+            wizard.updateWizard();
         }
 
         @Override

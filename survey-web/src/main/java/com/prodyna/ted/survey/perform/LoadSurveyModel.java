@@ -7,7 +7,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.string.StringValueConversionException;
 
 import com.prodyna.ted.survey.entity.SurveyEntity;
-import com.prodyna.ted.survey.exception.FunctionalRuntimeException;
 import com.prodyna.ted.survey.survey.SurveyService;
 
 /**
@@ -35,10 +34,8 @@ public class LoadSurveyModel extends LoadableDetachableModel<SurveyEntity> {
             if (id == null) {
                 return null;
             }
-            return service.findSurveyById(id);
+            return service.findSurveyById(id).getResult();
         } catch (StringValueConversionException e) {
-            e.printStackTrace();
-        } catch (FunctionalRuntimeException e) {
             e.printStackTrace();
         }
         return null;
