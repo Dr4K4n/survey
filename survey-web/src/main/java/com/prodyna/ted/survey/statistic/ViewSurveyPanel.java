@@ -1,15 +1,15 @@
 package com.prodyna.ted.survey.statistic;
 
+import static com.prodyna.ted.survey.condition.ComponentModifier.setVisibleIf;
+import static com.prodyna.ted.survey.condition.ConditionOperation.isNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.inject.Inject;
-
 import org.apache.wicket.ajax.json.JSONArray;
 import org.apache.wicket.ajax.json.JSONException;
-import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
@@ -17,8 +17,10 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import com.pingunaut.wicket.chartjs.chart.impl.Line;
@@ -34,21 +36,26 @@ import com.prodyna.ted.survey.entity.QuestionEntity;
 import com.prodyna.ted.survey.entity.Rating;
 import com.prodyna.ted.survey.entity.SurveyEntity;
 import com.prodyna.ted.survey.statistics.entity.SurveyQuestionAnswerStatistic;
-import com.prodyna.ted.survey.survey.SurveryStatisticsService;
 
 public class ViewSurveyPanel extends Panel {
 
     private static final long serialVersionUID = 1L;
 
-    @Inject
-    private SurveryStatisticsService surveyStatisticsService;
-
-    private final IModel<SurveyQuestionAnswerStatistic> model = Model.of();
-
-    public ViewSurveyPanel(final String id, final IModel<SurveyEntity> surveyModel) {
-        super(id, surveyModel);
+    public ViewSurveyPanel(final String wicketid, final IModel<SurveyEntity> surveyModel) {
+        super(wicketid, surveyModel);
         setOutputMarkupId(true);
-        model.setObject(surveyStatisticsService.getQuestionAnswerStatisticForSurvey(((SurveyEntity) getDefaultModelObject()).getId()));
+
+        Long id = ((SurveyEntity) getDefaultModelObject()).getId();
+
+        IModel<SurveyQuestionAnswerStatistic> model = Model.of();
+        if (((SurveyEntity) getDefaultModelObject()).getId() != null) {
+            model = new LoadSurveyQuestionAnswerStatisticModel(id);
+        }
+
+        Label noSurveyFound = new Label("noSurveyQuestionAnswerStatisticFound", new ResourceModel("noSurveyQuestionAnswerStatisticFound"));
+        noSurveyFound.add(setVisibleIf(isNull(Model.of(id))));
+        add(noSurveyFound);
+
         add(new Label("surveyDescription", new PropertyModel<String>(model, "survey.name")));
         add(new Label("noOfQuestions", new PropertyModel<String>(model, "numberOfQuestions")));
         add(new Label("noOfAnswers", new PropertyModel<String>(model, "numberOfAnswers")));
@@ -76,67 +83,12 @@ public class ViewSurveyPanel extends Panel {
         RadarChartPanel radarChartPanel = new RadarChartPanel("radarChartPanel", Model.of(new Radar()));
         add(radarChartPanel);
 
-        AbstractReadOnlyModel<RadarChartData<RadarDataSet>> radarChartData = new AbstractReadOnlyModel<RadarChartData<RadarDataSet>>() {
-            private static final long serialVersionUID = 1L;
+        RadarDataModel radarDataModel = new RadarDataModel(model);
 
-            @Override
-            public RadarChartData<RadarDataSet> getObject() {
-                RadarChartData<RadarDataSet> radarChartData = new RadarChartData<RadarDataSet>();
-                SurveyQuestionAnswerStatistic questionAnswerStatistic =
-                    surveyStatisticsService.getQuestionAnswerStatisticForSurvey(((SurveyEntity) getDefaultModelObject()).getId());
-
-                int i = 0;
-                for (List<AnswerEntity> answerEntities : questionAnswerStatistic.getQuestionToAnserMap().values()) {
-                    List<Integer> values = Arrays.asList(new Integer[]{0, 0, 0, 0, 0});
-                    for (AnswerEntity ae : answerEntities) {
-                        if (ae != null && ae.getRating() != null) {
-                            values.set(ae.getRating().ordinal(), values.get(ae.getRating().ordinal()) + 100);
-                        }
-                    }
-                    RadarDataSet radarDataSet = new RadarDataSet(values);
-                    radarDataSet.setFillColor(getColor(i));
-                    radarChartData.getDatasets().add(radarDataSet);
-                    i++;
-                }
-                return radarChartData;
-            }
-        };
-        radarChartPanel.getChart().setData(radarChartData.getObject());
-        AbstractReadOnlyModel<List<String>> labelsModel = new AbstractReadOnlyModel<List<String>>() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public List<String> getObject() {
-                // SurveyStatistics2 sust2 = surveyStatisticsService.getStatistics2ForSurvey(getModelObject());
-                // List<String> result = new ArrayList<String>();
-                // for (QuestionEntity qe : sust2.getQuestionToAnserMap().keySet()) {
-                // result.add(qe.getQuestion());
-                // }
-                // return result;
-                List<String> result = new ArrayList<String>();
-                for (Rating rating : Rating.values()) {
-                    result.add(rating.name());
-                }
-                return result;
-            }
-        };
+        radarChartPanel.getChart().setData(radarDataModel.getObject());
+        GraphLabelModel labelsModel = new GraphLabelModel();
         radarChartPanel.getChart().getData().setLabels(labelsModel.getObject());
 
-    }
-
-    protected String getColor(int i) {
-        switch (i) {
-            case 0:
-                return "rgba(220,220,220,0.5)";
-            case 1:
-                return "rgba(110,110,110,0.5)";
-            case 2:
-                return "rgba(55,55,55,0.5)";
-            case 3:
-                return "rgba(165,165,165,0.5)";
-            default:
-                return "rgba(0,0,0,0.5)";
-        }
     }
 
     @Override
@@ -145,13 +97,13 @@ public class ViewSurveyPanel extends Panel {
         response.render(JavaScriptReferenceHeaderItem.forReference(new JavaScriptResourceReference(ViewSurveyPage.class, "jquery.flot.stack.js"),
             true));
 
-        List<JSONObject> jsonObjectList = new ArrayList<JSONObject>();
-        SurveyQuestionAnswerStatistic questionAnswerStatistic =
-            surveyStatisticsService.getQuestionAnswerStatisticForSurvey(((SurveyEntity) getDefaultModelObject()).getId());
-
+        IModel<SurveyQuestionAnswerStatistic> model = Model.of();
+        if (((SurveyEntity) getDefaultModelObject()).getId() != null) {
+            model = new LoadSurveyQuestionAnswerStatisticModel(((SurveyEntity) getDefaultModelObject()).getId());
+        }
         int[][][] answers = new int[5][][];
 
-        int questionCount = questionAnswerStatistic.getQuestionToAnserMap().size();
+        int questionCount = model.getObject().getQuestionToAnserMap().size();
         answers[Rating.ONE.ordinal()] = new int[questionCount][];
         answers[Rating.TWO.ordinal()] = new int[questionCount][];
         answers[Rating.THREE.ordinal()] = new int[questionCount][];
@@ -159,7 +111,7 @@ public class ViewSurveyPanel extends Panel {
         answers[Rating.FIFE.ordinal()] = new int[questionCount][];
 
         int index = 0;
-        for (Entry<QuestionEntity, List<AnswerEntity>> entry : questionAnswerStatistic.getQuestionToAnserMap().entrySet()) {
+        for (Entry<QuestionEntity, List<AnswerEntity>> entry : model.getObject().getQuestionToAnserMap().entrySet()) {
             for (AnswerEntity answer : entry.getValue()) {
                 int[][] answerCountArray = answers[answer.getRating().ordinal()];
                 int[] answerCount = answerCountArray[index];
@@ -193,8 +145,63 @@ public class ViewSurveyPanel extends Panel {
         response.render(JavaScriptHeaderItem.forScript("var data = " + jsonAnswers.toString() + ";", System.currentTimeMillis() + ""));
     }
 
-    private SurveyEntity getModelObject() {
-        return (SurveyEntity) getDefaultModelObject();
+    private static class RadarDataModel extends LoadableDetachableModel<RadarChartData<RadarDataSet>> {
+        private static final long serialVersionUID = 1L;
+
+        private final IModel<SurveyQuestionAnswerStatistic> questionAnswerStatistic;
+
+        public RadarDataModel(IModel<SurveyQuestionAnswerStatistic> questionAnswerStatistic) {
+            this.questionAnswerStatistic = questionAnswerStatistic;
+        }
+
+        @Override
+        protected RadarChartData<RadarDataSet> load() {
+            RadarChartData<RadarDataSet> radarChartData = new RadarChartData<RadarDataSet>();
+
+            int i = 0;
+            for (List<AnswerEntity> answerEntities : questionAnswerStatistic.getObject().getQuestionToAnserMap().values()) {
+                List<Integer> values = Arrays.asList(new Integer[]{0, 0, 0, 0, 0});
+                for (AnswerEntity ae : answerEntities) {
+                    if (ae != null && ae.getRating() != null) {
+                        values.set(ae.getRating().ordinal(), values.get(ae.getRating().ordinal()) + 100);
+                    }
+                }
+                RadarDataSet radarDataSet = new RadarDataSet(values);
+                radarDataSet.setFillColor(getColor(i));
+                radarChartData.getDatasets().add(radarDataSet);
+                i++;
+            }
+            return radarChartData;
+        }
+
+        protected String getColor(int i) {
+            switch (i) {
+                case 0:
+                    return "rgba(220,220,220,0.5)";
+                case 1:
+                    return "rgba(110,110,110,0.5)";
+                case 2:
+                    return "rgba(55,55,55,0.5)";
+                case 3:
+                    return "rgba(165,165,165,0.5)";
+                default:
+                    return "rgba(0,0,0,0.5)";
+            }
+        }
+
+    }
+
+    private static class GraphLabelModel extends AbstractReadOnlyModel<List<String>> {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public List<String> getObject() {
+            List<String> result = new ArrayList<String>();
+            for (Rating rating : Rating.values()) {
+                result.add(rating.name());
+            }
+            return result;
+        }
     }
 
 }
