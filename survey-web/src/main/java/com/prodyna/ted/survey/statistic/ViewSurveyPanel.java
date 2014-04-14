@@ -1,5 +1,6 @@
 package com.prodyna.ted.survey.statistic;
 
+import static com.prodyna.ted.survey.condition.ComponentModifier.setInvisibleIf;
 import static com.prodyna.ted.survey.condition.ComponentModifier.setVisibleIf;
 import static com.prodyna.ted.survey.condition.ConditionOperation.isNull;
 
@@ -31,6 +32,7 @@ import com.pingunaut.wicket.chartjs.data.LineChartData;
 import com.pingunaut.wicket.chartjs.data.RadarChartData;
 import com.pingunaut.wicket.chartjs.data.sets.LineDataSet;
 import com.pingunaut.wicket.chartjs.data.sets.RadarDataSet;
+import com.prodyna.ted.survey.condition.ComponentModifier;
 import com.prodyna.ted.survey.entity.AnswerEntity;
 import com.prodyna.ted.survey.entity.QuestionEntity;
 import com.prodyna.ted.survey.entity.Rating;
@@ -55,10 +57,10 @@ public class ViewSurveyPanel extends Panel {
         Label noSurveyFound = new Label("noSurveyQuestionAnswerStatisticFound", new ResourceModel("noSurveyQuestionAnswerStatisticFound"));
         noSurveyFound.add(setVisibleIf(isNull(Model.of(id))));
         add(noSurveyFound);
-
-        add(new Label("surveyDescription", new PropertyModel<String>(model, "survey.name")));
-        add(new Label("noOfQuestions", new PropertyModel<String>(model, "numberOfQuestions")));
-        add(new Label("noOfAnswers", new PropertyModel<String>(model, "numberOfAnswers")));
+        ComponentModifier<Long> setInvisibleIf2 = setInvisibleIf(isNull(Model.of(id)));
+        add(new Label("surveyDescription", new PropertyModel<String>(model, "survey.name")).add(setInvisibleIf2));
+        // add(new Label("noOfQuestions", new PropertyModel<String>(model, "numberOfQuestions")).add(setInvisibleIf(isNull(Model.of(id)))));
+        // add(new Label("noOfAnswers", new PropertyModel<String>(model, "numberOfAnswers")).add(setInvisibleIf2));
 
         LineChartPanel lineChartPanel = new LineChartPanel("lineChartPanel", Model.of(new Line()));
         add(lineChartPanel);
@@ -108,7 +110,7 @@ public class ViewSurveyPanel extends Panel {
         answers[Rating.TWO.ordinal()] = new int[questionCount][];
         answers[Rating.THREE.ordinal()] = new int[questionCount][];
         answers[Rating.FOUR.ordinal()] = new int[questionCount][];
-        answers[Rating.FIFE.ordinal()] = new int[questionCount][];
+        answers[Rating.FIVE.ordinal()] = new int[questionCount][];
 
         int index = 0;
         for (Entry<QuestionEntity, List<AnswerEntity>> entry : model.getObject().getQuestionToAnserMap().entrySet()) {

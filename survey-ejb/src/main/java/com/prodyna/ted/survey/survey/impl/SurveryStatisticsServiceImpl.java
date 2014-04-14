@@ -1,5 +1,6 @@
 package com.prodyna.ted.survey.survey.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import com.prodyna.ted.survey.entity.AnswerEntity;
 import com.prodyna.ted.survey.entity.QuestionEntity;
 import com.prodyna.ted.survey.entity.Rating;
 import com.prodyna.ted.survey.entity.SurveyEntity;
@@ -64,8 +66,48 @@ public class SurveryStatisticsServiceImpl implements SurveryStatisticsService {
 
     @Override
     public SurveyQuestionAnswerStatistic getQuestionAnswerStatisticForSurvey(long surveyId) {
-        // TODO Auto-generated method stub
-        return null;
+        SurveyEntity surveyEntity = entityManager.find(SurveyEntity.class, surveyId);
+        SurveyQuestionAnswerStatistic result = new SurveyQuestionAnswerStatistic();
+
+        Map<QuestionEntity, List<AnswerEntity>> map = new HashMap<QuestionEntity, List<AnswerEntity>>();
+        result.setQuestionToAnserMap(map);
+
+        for (QuestionEntity qe : surveyEntity.getQuestions()) {
+            map.put(qe, getAnswers(qe));
+        }
+        return result;
+    }
+
+    private List<AnswerEntity> getAnswers(QuestionEntity qe) {
+        List<AnswerEntity> result = new ArrayList<AnswerEntity>();
+        int count = (int) Math.random() * 10 + 5;
+        for (int i = 0; i < count; i++) {
+            AnswerEntity ae = new AnswerEntity();
+            switch ((int) (Math.random() * 10) % 5) {
+                case 0:
+                    ae.setRating(Rating.ONE);
+                    break;
+                case 1:
+                    ae.setRating(Rating.TWO);
+                    break;
+                case 2:
+                    ae.setRating(Rating.THREE);
+                    break;
+                case 3:
+                    ae.setRating(Rating.FOUR);
+                    break;
+                case 4:
+                default:
+                    ae.setRating(Rating.FIVE);
+                    break;
+
+            }
+
+            ae.setQuestionEntity(qe);
+            result.add(ae);
+        }
+
+        return result;
     }
 
 }

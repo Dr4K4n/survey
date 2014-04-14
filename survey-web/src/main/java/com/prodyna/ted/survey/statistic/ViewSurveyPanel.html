@@ -7,15 +7,17 @@
 </head>
 <body>
 	<wicket:panel>
+		<div wicket:id="noSurveyQuestionAnswerStatisticFound"></div>
 		<wicket:message key="surveyDescriptionTitle">[Description]</wicket:message>
 		<span wicket:id="surveyDescription"></span><br>
-		<wicket:message key="noOfQuestionsTitle">[Number of Questions]</wicket:message>
-		<span wicket:id="noOfQuestions"></span><br>
-		<wicket:message key="noOfAnswersTitle">[Number of Answers]</wicket:message>
-		<span wicket:id="noOfAnswers"></span><br>
+<!-- 		<wicket:message key="noOfQuestionsTitle">[Number of Questions]</wicket:message> -->
+<!-- 		<span wicket:id="noOfQuestions"></span><br> -->
+<!-- 		<wicket:message key="noOfAnswersTitle">[Number of Answers]</wicket:message> -->
+<!-- 		<span wicket:id="noOfAnswers"></span><br> -->
 		<div wicket:id="lineChartPanel"></div>
-		<div wicket:id="radarChartPanel" style="width: 600px; height:300px;"></div>
-		
+		<div style="width: 1200px; height:600px;">
+		<div wicket:id="radarChartPanel" style="width: 1200px; height:600px;"></div>
+		</div>
 		<div id="allAnswersStackedChart" style="width:600px;height:300px"></div>
 <!-- 		<input type="hidden" wicket:id="dataField"></input> -->
 		<script>

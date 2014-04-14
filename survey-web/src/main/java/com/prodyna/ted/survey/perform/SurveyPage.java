@@ -94,7 +94,7 @@ public class SurveyPage extends SurveyBasePage {
 			radioGroup.add(new Radio<Rating>("two", Model.of(Rating.TWO), radioGroup));
 			radioGroup.add(new Radio<Rating>("three", Model.of(Rating.THREE), radioGroup));
 			radioGroup.add(new Radio<Rating>("four", Model.of(Rating.FOUR), radioGroup));
-			radioGroup.add(new Radio<Rating>("fife", Model.of(Rating.FIFE), radioGroup));
+			radioGroup.add(new Radio<Rating>("fife", Model.of(Rating.FIVE), radioGroup));
 			item.add(radioGroup);
 		}
 	}
