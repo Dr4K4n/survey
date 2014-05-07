@@ -1,5 +1,7 @@
 package com.prodyna.ted.survey.statistic;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import org.apache.wicket.Component;
@@ -29,15 +31,19 @@ public class SelectSurveyPage extends SurveyBasePage {
 
                 @Override
                 protected void populateItem(final ListItem<SurveyEntity> item) {
-                    item.add(new AjaxLink<String>("link", new PropertyModel<String>(item.getModelObject(), "name")) {
+                	AjaxLink<String> ajaxLink = new AjaxLink<String>("link", new PropertyModel<String>(item.getModelObject(), "name")) {
+						private static final long serialVersionUID = 1L;
 
-                        @Override
+						@Override
                         public void onClick(AjaxRequestTarget target) {
                             setResponsePage(new ViewSurveyPage(item.getModel()));
 
                         }
-                    });
-                    item.add(new Label("name", new PropertyModel<String>(item.getModelObject(), "name")));
+                    };
+                    ajaxLink.add(new Label("name", new PropertyModel<String>(item.getModelObject(), "name")));
+                    item.add(ajaxLink);
+                    item.add(new Label("fromDate", new PropertyModel<Date>(item.getModelObject(),"fromDate")));
+                    item.add(new Label("toDate", new PropertyModel<Date>(item.getModelObject(),"toDate")));
                 }
 
             });
@@ -48,7 +54,6 @@ public class SelectSurveyPage extends SurveyBasePage {
 
     @Override
     protected Component createTitle(String id) {
-        // TODO Auto-generated method stub
         return new Label(id, new ResourceModel("title"));
     }
 

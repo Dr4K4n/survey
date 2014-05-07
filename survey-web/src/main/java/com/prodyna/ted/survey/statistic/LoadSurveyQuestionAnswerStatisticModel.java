@@ -21,7 +21,7 @@ public class LoadSurveyQuestionAnswerStatisticModel extends LoadableDetachableMo
     private final Long id;
 
     @Inject
-    private SurveryStatisticsService surveyStatisticsService;
+    private transient SurveryStatisticsService surveyStatisticsService;
 
     public LoadSurveyQuestionAnswerStatisticModel(Long id) {
         this.id = id;

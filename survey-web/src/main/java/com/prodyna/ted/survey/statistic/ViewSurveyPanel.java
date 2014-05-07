@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import org.apache.wicket.ajax.json.JSONArray;
 import org.apache.wicket.ajax.json.JSONException;
+import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
@@ -131,7 +132,10 @@ public class ViewSurveyPanel extends Panel {
         JSONArray jsonAnswers = new JSONArray();
         try {
             for (int i = 0; i < answers.length; i++) {
-                jsonAnswers.put(i, new JSONArray(answers[i]));
+                JSONObject dataObject = new JSONObject();
+                dataObject.put("data", answers[i]);
+                dataObject.put("label", Rating.values()[i]);
+                jsonAnswers.put(i, dataObject);
                 // JSONArray answerCount = new JSONArray();
                 // for (int j = 0; j < answers[i].length; j++) {
                 // int count = answers[i][j];
@@ -165,7 +169,7 @@ public class ViewSurveyPanel extends Panel {
                 List<Integer> values = Arrays.asList(new Integer[]{0, 0, 0, 0, 0});
                 for (AnswerEntity ae : answerEntities) {
                     if (ae != null && ae.getRating() != null) {
-                        values.set(ae.getRating().ordinal(), values.get(ae.getRating().ordinal()) + 100);
+                        values.set(ae.getRating().ordinal(), values.get(ae.getRating().ordinal()) + 1);
                     }
                 }
                 RadarDataSet radarDataSet = new RadarDataSet(values);
