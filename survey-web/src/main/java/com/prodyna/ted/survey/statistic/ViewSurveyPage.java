@@ -10,6 +10,9 @@ import org.apache.wicket.util.string.StringValue;
 import com.prodyna.ted.survey.entity.SurveyEntity;
 import com.prodyna.ted.survey.page.SurveyBasePage;
 import com.prodyna.ted.survey.perform.LoadSurveyModel;
+import com.prodyna.ted.survey.statistic.radarchart.ViewSurveyPanel;
+import com.prodyna.ted.survey.statistic.ratingstable.ViewQuestionRatingPanel;
+import com.prodyna.ted.survey.statistic.stackedchart.ViewStackedChartPanel;
 
 public class ViewSurveyPage extends SurveyBasePage {
     private static final long serialVersionUID = -1862972283822977217L;
@@ -18,10 +21,14 @@ public class ViewSurveyPage extends SurveyBasePage {
         StringValue idValue = pageParameters.get("id");
         LoadSurveyModel model = new LoadSurveyModel(idValue.toLongObject());
         add(new ViewSurveyPanel("panel", model));
+        add(new ViewStackedChartPanel("stackedChart", model));
+        add(new ViewQuestionRatingPanel("answerRating", model));
     }
 
     public ViewSurveyPage(IModel<SurveyEntity> iModel) {
         add(new ViewSurveyPanel("panel", iModel));
+        add(new ViewStackedChartPanel("stackedChart", iModel));
+        add(new ViewQuestionRatingPanel("answerRating", iModel));
     }
 
     @Override

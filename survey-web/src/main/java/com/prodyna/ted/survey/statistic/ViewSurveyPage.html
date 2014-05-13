@@ -6,9 +6,16 @@
 <title wicket:id="title"></title>
 </head>
 <body>
+	
 	<wicket:extend>
-		<div wicket:id="panel">
+		<div class="row clearfix" style="margin-bottom:40px">
+			<div class="col-md-6">This page demonstrates the reusable components of Wicket. There are three different panels included into this page. Each panel contains a different type of representation. By using Bootstrap the components are rearranged if the browser window is resized to a small width.</div>
 		</div>
+		<div class="row clearfix">
+			<div class="col-md-6" wicket:id="panel"></div>
+			<div class="col-md-6" wicket:id="stackedChart"></div>
+		</div>
+		<div class="col-md-6" wicket:id="answerRating"></div>
 	</wicket:extend>
 </body>
 </html>
